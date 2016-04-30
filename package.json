@@ -1,0 +1,12 @@
+{
+    "name": "lambda-restoreEC2",
+    "version": "0.0.1",
+    "author": {
+        "name": "Alessandro Beltramo"
+    },
+    "description": "TO DO",
+    "dependencies": {
+        "aws-sdk" : "*"
+    },
+    "main": "index.js"
+}
