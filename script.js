@@ -2,6 +2,7 @@ var AWS = require('aws-sdk');
 AWS.config.region = 'eu-central-1';
 
 var ec2 = new AWS.EC2();
+var route53 = new AWS.Route53();
 
 
 // 1- Read userData file
@@ -25,7 +26,7 @@ ec2.runInstances(params, function(err, data) {
   if (err) { console.log("Could not create instance", err); return; }
 
   var instanceId = data.Instances[0].InstanceId;
-  console.log("Created instance", instanceId);
+  console.log("Created instance " + instanceId);
 	
 	ec2.waitFor('instanceRunning', {InstanceIds:[instanceId]}, function(err, data) {
 		console.log("Instance is running.");		
@@ -38,12 +39,40 @@ ec2.runInstances(params, function(err, data) {
 			else
 				attachVolume(instanceId);
 		});
-	}); // End wait for instanceRunning
 
-	//Update ROUTE53 entry to new server
-	
+		//Update ROUTE53 entry to new server
+		//1- Get public DNS
+		ec2.describeInstances({InstanceIds:[instanceId]},function(err,data){
+			var instanceDNS = data.Reservations[0].Instances[0].PublicDnsName
+			//2- Update
+			var params = {
+				ChangeBatch: {
+					Changes: [{
+						  Action: 'UPSERT', // IF not present insert else update
+						  ResourceRecordSet: {
+						    Name: 'server.abeltra.me.', 
+						    Type: 'CNAME',
+						    ResourceRecords: [{
+						        Value: instanceDNS //The new ip of the instance
+						    }],
+						    TTL: 300,
+						  }
+						}]
+				},
+				HostedZoneId: 'Z79DT7EWNW7FT'
+			};
+			route53.changeResourceRecordSets(params, function(err, data) {
+				if (err) console.log(err, err.stack); // an error occurred
+				else     console.log("Updated ROUTE53 server.abeltra.me with ",instanceDNS);           
+			});
+		});
+	}); // End wait for instanceRunning
 }); 
 
+
+/*
+ * HELPER FUNCTIONS 
+ */
 function detachVolume(instanceId){
 	ec2.detachVolume({
 			VolumeId: dataVolumeID,
