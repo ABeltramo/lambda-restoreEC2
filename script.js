@@ -11,7 +11,7 @@ var bitmap = fs.readFileSync('userdata.sh');
 var userData = new Buffer(bitmap).toString('base64');
 
 var params = {
-  ImageId: 'ami-b8de3cd7', // Docker + MYSQL
+  ImageId: 'ami-08df3d67', // Docker + MYSQL
   InstanceType: 't2.micro',
   MinCount: 1, MaxCount: 1,
   SecurityGroups: ["SSH+Mysql"],
