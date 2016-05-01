@@ -11,7 +11,7 @@ var bitmap = fs.readFileSync('userdata.sh');
 var userData = new Buffer(bitmap).toString('base64');
 
 var params = {
-  ImageId: 'ami-60d7350f', // Docker + MYSQL
+  ImageId: 'ami-b8de3cd7', // Docker + MYSQL
   InstanceType: 't2.micro',
   MinCount: 1, MaxCount: 1,
   SecurityGroups: ["SSH+Mysql"],
@@ -55,7 +55,7 @@ ec2.runInstances(params, function(err, data) {
 						    ResourceRecords: [{
 						        Value: instanceDNS //The new ip of the instance
 						    }],
-						    TTL: 300,
+						    TTL: 60,
 						  }
 						}]
 				},
