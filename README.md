@@ -11,8 +11,8 @@ Using the AWS API will do the following step:
   
 **userdata.sh**  
 Will be executed only on instance creation.  
-The first step is to wait till the DATA volume is attached. In my instance the DATA volume is the one that contain persisting data like MYSQL table, configuration file, ...  
-In the case the IP is changed (or simple to avoid the expiration) the script will renew the Letsencrypt cert for the domain.  
+The first step is to wait till the DATA volume is attached. In my instance the DATA volume is the one that contain persisting data like MYSQL table, configuration file, etc...  
+In the case the IP is changed (or simply to avoid the expiration) the script will renew the Letsencrypt cert for the domain.  
 After that the docker instances will be fired up and the system is ready.
 
 License
