@@ -26,34 +26,36 @@ var dataVolumeID = "vol-d178e56b"; // The ID of the DATA EBS volume
 /*
  * HELPER FUNCTIONS 
  */
-function detachVolume(instanceId){
+function detachVolume(instanceId,cb){
 	ec2.detachVolume({
 			VolumeId: dataVolumeID,
 			Force: true
 		}, function(err, data) {
-	if (err) console.log(err, err.stack); // an error occurred
-	else // Attach EBS to NEW istance
-		attachVolume(instanceId);
+		if (err) console.log(err, err.stack); // an error occurred
+		else{
+			console.log("Detached volume");
+			cb();
+		}
 	});
 }
 
-function attachVolume(instanceId){
+function attachVolume(instanceId,cb){
 	ec2.waitFor("volumeAvailable", {VolumeIds:[dataVolumeID]}, function(err,data) {
-			ec2.attachVolume({
-					Device: '/dev/xvdf', 
-					InstanceId: instanceId, 
-					VolumeId: dataVolumeID,
-				}, function(err, data) {
-				if (err) console.log(err, err.stack); // an error occurred
-				else {
-					console.log("DATA volume attached succesfully");
-					callback("Completed");
-				}
-			});
+		ec2.attachVolume({
+				Device: '/dev/xvdf', 
+				InstanceId: instanceId, 
+				VolumeId: dataVolumeID,
+			}, function(err, data) {
+			if (err) console.log(err, err.stack); // an error occurred
+			else {
+				console.log("Detached volume");
+				cb();
+			}
+		});
 	}); //End wait for volumeAvailable
 }
 
-exports.handler = (event, context, callback) => {
+exports.handler = (event, context, cbLambda) => {
    // Create the instance
     ec2.runInstances(params, function(err, data) {
       if (err) { console.log("Could not create instance", err); return; }
@@ -68,9 +70,15 @@ exports.handler = (event, context, callback) => {
     			var volumeState = data.Volumes[0].State
     			console.log("DATA volume is in " + volumeState + " state");
     			if (volumeState == "in-use")
-    				detachVolume(instanceId);
-    			else
-    				attachVolume(instanceId);
+    				detachVolume(instanceId,function(){
+						attachVolume(instanceId,function(){
+							cbLambda(done,"Completato lo script")
+						})
+					});
+    			else 
+					attachVolume(instanceId,function(){
+						cbLambda(done,"Completato lo script")
+					})
     		});
     
     		//Update ROUTE53 entry to new server
