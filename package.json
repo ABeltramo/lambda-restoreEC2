@@ -8,5 +8,5 @@
     "dependencies": {
         "aws-sdk" : "*"
     },
-    "main": "index.js"
+    "main": "script.js"
 }
