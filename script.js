@@ -12,7 +12,7 @@ var bitmap = fs.readFileSync('userdata.sh');
 var userData = new Buffer(bitmap).toString('base64');
 
 var params = {
-  ImageId: 'ami-08df3d67', // Docker + MYSQL
+  ImageId: 'ami-6af81505', // Docker + MYSQL
   InstanceType: 't2.micro',
   MinCount: 1, MaxCount: 1,
   SecurityGroups: ["SSH+Mysql"],
@@ -72,12 +72,12 @@ exports.handler = (event, context, cbLambda) => {
     			if (volumeState == "in-use")
     				detachVolume(instanceId,function(){
 						attachVolume(instanceId,function(){
-							cbLambda(done,"Completato lo script")
+							cbLambda(null,"Completato lo script")
 						})
 					});
     			else 
 					attachVolume(instanceId,function(){
-						cbLambda(done,"Completato lo script")
+						cbLambda(null,"Completato lo script")
 					})
     		});
     
