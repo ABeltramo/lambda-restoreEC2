@@ -19,4 +19,7 @@ echo "Start OpenVPN"
 sudo docker run --name openVPNData -v /mnt/DATA/ovpn-data/:/etc/openvpn busybox
 sudo docker run --volumes-from openVPNData -d -p 1194:1194/udp --privileged --name openVPN kylemanna/openvpn
 # Backup MYSQL
+echo "Updating MYSQL backup"
 sudo apt-get install python-dateutil
+curl https://raw.githubusercontent.com/Copia-Incolla/lambda-restoreEC2/master/backupMYSQL.sh -o /etc/cron.daily/backupMYSQL.sh
+sudo chmod +x /etc/cron.daily/backupMYSQL.sh 
