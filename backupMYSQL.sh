@@ -1,7 +1,7 @@
 #!/bin/sh
 # MysqlDump
 DUMP=/tmp/mysqldump.sql
-/usr/bin/docker exec -i CopiaIncollaDB mysqldump --databases dbarona dbomegna dbterni dbverbania dbveroborella servermail tests -uroot -pa$
+/usr/bin/docker exec -i CopiaIncollaDB mysqldump --all-databases -ubackup > $DUMP
 DUMPTAR=/tmp/mysqldump.tgz
 /bin/tar -zcf $DUMPTAR $DUMP
 /mnt/DATA/s3cmd/s3cmd-1.6.1/s3cmd --config /mnt/DATA/s3cmd/s3cfg put $DUMPTAR s3://bkp-srv-ec2/mysql/
