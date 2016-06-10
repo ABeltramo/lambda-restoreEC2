@@ -8,7 +8,7 @@ echo "Refresh the letsencrypt cert"
 sudo rm -r /etc/letsencrypt/archive/*
 sudo rm -r /etc/letsencrypt/live/*
 sudo rm /etc/letsencrypt/renewal/*
-/mnt/DATA/letsencrypt/letsencrypt-auto certonly --email beltramo.ale@gmail.com --standalone -d john.copiaincollafranchising.it
+/mnt/DATA/letsencrypt/letsencrypt-auto certonly --email beltramo.ale@gmail.com --standalone -d gestio.copiaincollafranchising.it
 chown -R ubuntu /etc/letsencrypt/
 chmod -R ugo+rw /etc/letsencrypt/
 echo "Start MYSQL"
