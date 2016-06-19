@@ -12,7 +12,7 @@ var bitmap = fs.readFileSync('userdata.sh');
 var userData = new Buffer(bitmap).toString('base64');
 
 var params = {
-  ImageId: 'ami-6af81505', // Docker + MYSQL
+  ImageId: 'ami-87564feb', // UBUNTU 14.04 LTS
   InstanceType: 't2.micro',
   MinCount: 1, MaxCount: 1,
   SecurityGroups: ["SSH+Mysql"],

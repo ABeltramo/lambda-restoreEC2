@@ -29,5 +29,6 @@ sudo /usr/bin/docker run --name openVPNData -v /mnt/DATA/ovpn-data/:/etc/openvpn
 sudo /usr/bin/docker run --volumes-from openVPNData -d -p 1194:1194/udp --privileged --name openVPN kylemanna/openvpn
 
 # BACKUP
+sudo apt-get install -y python-dateutil
 sudo curl https://raw.githubusercontent.com/Copia-Incolla/lambda-restoreEC2/master/backupMYSQL.sh -o /etc/cron.daily/backupMYSQL.sh
 sudo chmod +x /etc/cron.daily/backupMYSQL.sh 
