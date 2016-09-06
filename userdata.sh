@@ -18,7 +18,7 @@ sudo apt-get install -y linux-image-extra-$(uname -r) docker-engine
 sudo service docker start
 
 # Certs
-/mnt/DATA/letsencrypt/letsencrypt-auto certonly --email beltramo.ale@gmail.com --standalone -d gestio.copiaincollafranchising.it
+/mnt/DATA/letsencrypt/letsencrypt-auto renew --quiet --no-self-upgrade
 chown -R ubuntu /etc/letsencrypt/
 chmod -R ugo+rw /etc/letsencrypt/
 
